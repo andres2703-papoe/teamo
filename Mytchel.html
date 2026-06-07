@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mytchel ❤️</title>
+
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #ffe6f0;
+        overflow-x: hidden;
+    }
+
+    #login {
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(135deg, #ffb6d9, #ff69b4);
+        color: white;
+        text-align: center;
+        transition: opacity 0.8s ease;
+    }
+    
+    #login.hide {
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    input {
+        padding: 12px;
+        border-radius: 10px;
+        border: none;
+        margin-top: 10px;
+        text-align: center;
+        font-size: 16px;
+    }
+
+    button {
+        margin-top: 15px;
+        padding: 12px 25px;
+        border: none;
+        border-radius: 20px;
+        background: white;
+        color: #ff69b4;
+        cursor: pointer;
+        font-weight: bold;
+        transition: transform 0.2s;
+    }
+    
+    button:hover {
+        transform: scale(1.05);
+    }
+
+    #contenido {
+        display: none;
+        opacity: 0;
+        transition: opacity 1s ease;
+    }
+    
+    #contenido.show {
+        opacity: 1;
+    }
+
+    header {
+        background: #ff69b4;
+        color: white;
+        padding: 15px;
+        text-align: center;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+
+    nav a {
+        margin: 10px;
+        color: white;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    section {
+        padding: 40px 20px;
+        text-align: center;
+    }
+
+    .gallery {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+        max-width: 1100px;
+        margin: 0 auto;
+    }
+
+    .gallery img {
+        width: 100%;
+        aspect-ratio: 1;
+        object-fit: cover;
+        border-radius: 20px; /* Acabado redondeado */
+        box-shadow: 0 8px 25px rgba(255, 105, 180, 0.3);
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .gallery img.show {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .gallery img:hover {
+        transform: scale(1.08);
+    }
+
+    #surpriseBtn {
+        padding: 18px 40px;
+        font-size: 18px;
+        border-radius: 30px;
+        background: #ff69b4;
+        color: white;
+        border: none;
+        cursor: pointer;
+        animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+    }
+
+    #carta {
+        display: none;
+        background: white;
+        padding: 30px;
+        margin-top: 20px;
+        border-radius: 20px;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+        animation: aparecer 0.8s ease;
+    }
+    
+    @keyframes aparecer {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .heart {
+        position: fixed;
+        color: #ff4d88;
+        animation: float 4s linear forwards;
+        pointer-events: none;
+    }
+
+    @keyframes float {
+        0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+        100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+    }
+
+    .seccion {
+        visibility: hidden;
+        opacity: 0;
+        transform: translateY(30px);
+        transition: opacity 0.6s ease, transform 0.6 ease, visibility 0s 0.6s;
+        position: absolute;
+        width: 100%;
+        top: 0;
+        left: 0;
+    }
+
+    .seccion.activa {
+        visibility: visible;
+        opacity: 1;
+        transform: translateY(0);
+        transition: opacity 0.6s ease, transform 0.6 ease, visibility 0s 0s;
+    }
+</style>
+</head>
+
+<body>
+
+
+<div id="login">
+    <h1>❤️ Una sorpresa para Mytchel ❤️</h1>
+    <p>Solo tú conoces la llave... ❤️</p>
+    <input type="password" id="password" placeholder="Adivina 😶‍🌫️" maxlength="8">
+    <button onclick="checkPassword()">Abrir mi regalo</button>
+    <p id="error" style="margin-top: 10px;"></p>
+</div>
+
+
+<div id="contenido">
+
+<header>
+    <nav>
+        <a href="#" onclick="mostrarSeccion(event,'inicio')">Inicio</a>
+        <a href="#" onclick="mostrarSeccion(event,'galeria')">Galería</a>
+        <a href="#" onclick="mostrarSeccion(event,'tiempo')">Tiempo juntos</a>
+        <a href="#" onclick="mostrarSeccion(event,'sorpresa')">Sorpresa</a>
+    </nav>
+</header>
+
+<section id="inicio" class="seccion activa">
+    <h1>7 meses contigo ❤️</h1>
+    <h2>Los mejores que he tenido</h2>
+</section>
+
+<section id="galeria" class="seccion">
+    <h2>Nuestra galería 📸</h2>
+    <div class="gallery" id="gallery">
+
+    </div>
+</section>
+
+<section id="tiempo" class="seccion">
+    <h2>Tiempo juntos ⏳</h2>
+    <h3 id="contador"></h3>
+</section>
+
+<section id="sorpresa" class="seccion">
+    <h2>Sorpresa 🎁</h2>
+    <button id="surpriseBtn" onclick="surprise()">Prohibido presionar 👀</button>
+
+    <div id="carta">
+        <h3>Mytchel ❤️</h3>
+        <p>
+            Si llegaste hasta aquí, es porque has recorrido cada rincón de esta pequeña página. Pero la verdad es que nada en este mundo puede mostrar lo feliz que me haces.<br><br>
+
+            No se como ha pasado tanto tiempo desde aquel 10 de noviembre, cada día contigo se ha convertido en un recuerdo que quiero guardar para siempre.<br><br>
+
+            Gracias por ser tú. ❤️<br><br>
+
+            Te amo muchísimo.<br><br>
+
+            Con todo mi amor,<br>
+            Felipe
+        </p>
+
+        <h2>Gracias por estos 7 meses ❤️</h2>
+        <h3>Esto es solo el comienzo de una historia que no quiero que se acabe ✨</h3>
+    </div>
+</section>
+
+</div>
+
+<script>
+
+function checkPassword() {
+    let pass = document.getElementById("password").value;
+
+    if(pass === "10/11/25") {
+        document.getElementById("login").classList.add("hide");
+        setTimeout(() => {
+            document.getElementById("contenido").style.display = "block";
+            setTimeout(() => {
+                document.getElementById("contenido").classList.add("show");
+                cargarFotos();
+                startHearts();
+            }, 100);
+        }, 800);
+    } else {
+        document.getElementById("error").innerHTML =
+        "❤️ Pista: Separados ❤️";
+    }
+}
+function cargarFotos() {
+    const gallery = document.getElementById("gallery");
+    gallery.innerHTML="";
+    for(let i = 1; i <= 10; i++) {
+        let img = document.createElement("img");
+        img.src = `foto${i}.jpeg`;
+        img.alt = `Recuerdo ${i}`;
+        gallery.appendChild(img);
+        
+        setTimeout(() => {
+            img.classList.add("show");
+        }, i * 120);
+    }
+}
+function updateCounter() {
+    const startDate = new Date("2025-11-10");
+    const now = new Date();
+
+    let diff = now - startDate;
+
+    let days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    let hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    let minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    let seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+    document.getElementById("contador").innerHTML =
+        `${days} días, ${hours} horas, ${minutes} minutos, ${seconds} segundos`;
+}
+
+setInterval(updateCounter, 1000);
+updateCounter();
+function surprise() {
+    document.getElementById("carta").style.display = "block";
+    startHearts();
+}
+function startHearts() {
+    setInterval(() => {
+        let heart = document.createElement("div");
+        heart.classList.add("heart");
+        heart.innerHTML = "❤️";
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.fontSize = Math.random() * 20 + 15 + "px";
+
+        document.body.appendChild(heart);
+
+        setTimeout(() => {
+            heart.remove();
+        }, 4000);
+
+    }, 300);
+}
+document.getElementById("password").addEventListener("keypress", function(e) {
+    if(e.key === "Enter") checkPassword();
+});
+
+function mostrarSeccion(e,id) {
+    e.preventDefault();
+    document.querySelectorAll('.seccion').forEach(s => {
+        s.classList.remove('activa');
+    });
+    const nueva = document.getElementById(id);
+    nueva.classList.add('activa');
+}
+
+</script>
+
+</body>
+</html>
