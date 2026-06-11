@@ -11,6 +11,7 @@
         font-family: Arial, sans-serif;
         background: #ffe6f0;
         overflow-x: hidden;
+        padding-top: 70px;
     }
 
     #login {
@@ -70,8 +71,10 @@
         color: white;
         padding: 15px;
         text-align: center;
-        position: sticky;
+        position: fixed;
         top: 0;
+        left: 0;
+        width: 100%;
         z-index: 10;
     }
 
@@ -83,7 +86,7 @@
     }
 
     section {
-        padding: 40px 20px;
+        padding: 70px 20px 40px 20px;
         text-align: center;
     }
 
@@ -177,6 +180,14 @@
         transform: translateY(0);
         transition: opacity 0.6s ease, transform 0.6 ease, visibility 0s 0s;
     }
+
+    img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 12px;
+        display: block;
+        margin: 15px auto;
+    }
 </style>
 </head>
 
@@ -251,7 +262,7 @@
 function checkPassword() {
     let pass = document.getElementById("password").value;
 
-    if(pass === "10/11/25") {
+    if(pass === "10-11-25") {
         document.getElementById("login").classList.add("hide");
         setTimeout(() => {
             document.getElementById("contenido").style.display = "block";
